@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Student Auto-fill by Serial No</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mt-4">Students</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Serial No</label>
+                    <input type="text" name="serial_no" id="serial_no" class="form-control" placeholder="Enter serial number" onkeyup="GetDetail(this.value)">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>အမည် (မြန်မာ)</label>
+                    <input type="text" name="student_name_mm" id="student_name_mm" class="form-control" placeholder="အမည်">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label>Name (English)</label>
+                    <input type="text" name="student_name_en" id="student_name_en" class="form-control" placeholder="Name">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function GetDetail(str) {
+            if (str.length == 0) {
+                $('#student_name_mm').val("");
+                $('#student_name_en').val("");
+                return;
+            }
+
+            // Ajax request
+            $.ajax({
+                url: 'eg1.php',
+                type: 'GET',
+                data: { serial_no: str },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    $('#student_name_mm').val(data[0]);
+                    $('#student_name_en').val(data[1]);
+                },
+                error: function() {
+                    console.error("Error retrieving student info.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>
